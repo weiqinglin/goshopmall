@@ -91,7 +91,7 @@ class WxController extends Controller{
             }]
        }]
  }';
-        $result = __http_client($url,'post',$data);
+        $result = $this->__http_client($url,'post',$data);
         echo "<pre>";print_r($result);
     }
 }
