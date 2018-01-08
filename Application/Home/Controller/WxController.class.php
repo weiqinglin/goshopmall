@@ -35,7 +35,7 @@ class WxController extends Controller{
         $appID = C('appID');
         $appsecret = C('appsecret');
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appID}&secret={$appsecret}";
-        $result = __http_client($url);
+        $result = $this->__http_client($url);
         if(isset($result['access_token'])){
             cookie('access_token',$result['access_token'],$result['expires_in']);
             return $result['access_token'];
