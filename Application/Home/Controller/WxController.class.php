@@ -60,7 +60,7 @@ class WxController extends Controller{
     }
 
     public function setMenu(){
-        $access_token = cookie('access_token');
+        $access_token = $this->__getAccessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token={$access_token}";
         $data = ' {
      "button":[
