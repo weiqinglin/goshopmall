@@ -29,7 +29,7 @@ class WxController extends Controller{
     }
 
     private function __getAccessToken(){
-        if(isset(cookie('access_token'))){
+        if(cookie('access_token') !== ''){
             return cookie('access_token');
         }
         $appID = C('appID');
