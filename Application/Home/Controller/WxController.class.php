@@ -29,7 +29,7 @@ class WxController extends Controller{
     }
 
     private function __getAccessToken(){
-        if(cookie('access_token') !== ''){
+        if(cookie('access_token') != ''){
             return cookie('access_token');
         }
         $appID = C('appID');
@@ -55,7 +55,7 @@ class WxController extends Controller{
             curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
         }
         $result = curl_exec($ch);
-        $result = json_decode(json_encode($result),true);
+        $result = json_decode($result,true);
         return $result;
     }
 
