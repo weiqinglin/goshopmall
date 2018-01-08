@@ -1,2 +1,10 @@
-/Application/Runtime/*;
+Application/Runtime/*
+\#*
+.*
+!.gitignore
+*.swp
+*~
+*.swo
+$.swn
+
 
