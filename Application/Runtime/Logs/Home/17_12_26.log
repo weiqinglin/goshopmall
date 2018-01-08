@@ -1,0 +1,8 @@
+[ 2017-12-26T13:15:09+08:00 ] 192.168.110.1 /thinkphp_3.2.3_full/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000061s ]
+INFO: [ app_init ] --END-- [ RunTime:0.061509s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.091504s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.091580s ]
+

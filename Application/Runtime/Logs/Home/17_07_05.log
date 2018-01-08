@@ -1,0 +1,8 @@
+[ 2017-07-05T06:17:33+08:00 ] ::1 /thinkphp_3.2.3_full/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000018s ]
+INFO: [ app_init ] --END-- [ RunTime:0.008684s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.045597s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.045677s ]
+
