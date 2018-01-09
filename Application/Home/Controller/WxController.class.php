@@ -66,7 +66,7 @@ class WxController extends Controller{
     }
 
     public function reponseImage($obj){
-        $image = $this->getImage();
+//        $image = $this->getImage();
         $image['MediaId'] = C('media_id');
         $msg = sprintf($this->_msgTpl['image'],$obj->FromUserName,$obj->ToUserName,time(),$image['MediaId']);
         echo $msg;
@@ -192,7 +192,7 @@ class WxController extends Controller{
         $data['media'] = "@{$this->getUrl()}{$path};type=image;filename={$name}.{$ext};filelength={$filesize};content-type=image/$ext;";
         $result = $this->__http_client($url,'post',$data);
         C('media_id',$result['media_id']);
-        if($this->media != ''){
+        if(isset($result['media_id'])){
             echo '文件上传成功';
         }else{
             echo '文件上传失败';
