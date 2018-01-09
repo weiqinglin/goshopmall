@@ -47,6 +47,7 @@ class WxController extends Controller{
     }
 
     protected function _responseMsg($obj){
+        error_log(print_r($obj,1),3,'/tmp/ds.log');
         switch (C('responseType')){
             case 'image':
                 $this->reponseImage($obj);
@@ -69,6 +70,7 @@ class WxController extends Controller{
 //        $image = $this->getImage();
         $image['MediaId'] = C('media_id');
         $msg = sprintf($this->_msgTpl['image'],$obj->FromUserName,$obj->ToUserName,time(),$image['MediaId']);
+        error_log(print_r($msg,1),3,'/tmp/ds.log');
         echo $msg;
     }
 
