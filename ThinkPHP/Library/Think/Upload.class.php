@@ -142,6 +142,7 @@ class Upload {
         if(function_exists('finfo_open')){
             $finfo   =  finfo_open ( FILEINFO_MIME_TYPE );
         }
+
         // 对上传文件数组信息处理
         $files   =  $this->dealFiles($files);    
         foreach ($files as $key => $file) {

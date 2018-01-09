@@ -64,17 +64,27 @@ class WxController extends Controller{
     }
 
     public function reponseImage($obj){
-
+        $image = $this->getImage();
+        $image['MediaId'] = 'aLjKn8LWT4uAp2mzRPEwxr-E4pQV_zMY2cwq4mjrKTAuAdDkwqQtI8vkoptf3k-O';
+        $msg = sprintf($this->_msgTpl['image'],$obj->FromUserName,$obj->ToUserName,time(),$image['MediaId']);
+        echo $msg;
     }
 
     public function responseVoice($obj){
+        $voice = $this->getVoice();
+        $msg = sprintf($this->_msgTpl['voice'],$obj->FromUserName,$obj->ToUserName,time(),$voice['MediaId']);
+        echo $msg;
 
     }
     public function responseVedio($obj){
-
+        $vedio = $this->getVedio();
+        $msg = sprintf($this->_msgTpl['video'],$obj->FromUserName,$obj->ToUserName,time(),$vedio['MediaId'],$vedio['Title'],$vedio['Description']);
+        echo $msg;
     }
     public function responseMusic($obj){
-
+        $music = $this->getMusic();
+        $msg = sprintf($this->_msgTpl['music'],$obj->FromUserName,$obj->ToUserName,time(),$music['Title'],$music['Description'],$music['MusicUrl'],$music['HQMusicUrl'],$music['ThumbMediaId']);
+        echo $msg;
     }
     public function responseText($obj){
         $content = '你还好?';
@@ -102,6 +112,9 @@ class WxController extends Controller{
     {
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch,CURLOPT_SAFE_UPLOAD,false);
         curl_setopt($ch,CURLOPT_HEADER,0);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
         if($method == 'post'){
@@ -110,6 +123,7 @@ class WxController extends Controller{
         }
         $result = curl_exec($ch);
         $result = json_decode($result,true);
+
         return $result;
     }
 
@@ -147,5 +161,51 @@ class WxController extends Controller{
  }';
         $result = $this->__http_client($url,'post',$data);
         echo "<pre>";print_r($result);
+    }
+
+    public function upload(){
+        $this->display('Wx/upload');
+    }
+
+    public function uploadFunction(){
+        $upload = new \Think\Upload();// 实例化上传类
+        $upload->maxSize   =     3145728 ;// 设置附件上传大小
+        $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+        $upload->savePath  =      'Public/Uploads/'; // 设置附件上传目录// 上传文件
+        $info   =   $upload->uploadOne($_FILES['photo']);
+        if(!$info) {// 上传错误提示错误信息
+            $this->error($upload->getError());
+            return false;
+        }else{// 上传成功 获取上传文件信息
+            $path =  $upload->rootPath.$info['savepath'].$info['savename'];
+        }
+        if($_POST['type'] == 'all'){
+            $url = "https://api.weixin.qq.com/cgi-bin/material/add_news?access_token={$this->__getAccessToken()}";
+        }else{
+            $url = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token={$this->__getAccessToken()}&type=image";
+        }
+        $name = pathinfo($path,PATHINFO_FILENAME);
+        $ext = pathinfo($path,PATHINFO_EXTENSION);
+        $filesize = filesize($path);
+        $data['media'] = "@{$this->getUrl()}{$path};type=image;filename={$name}.{$ext};filelength={$filesize};content-type=image/$ext;";
+        $result = $this->__http_client($url,'post',$data);
+        if(isset($result['media_id'])){
+            $data = array(
+
+            );
+            $sql = M('wxsucai')->add();
+        }
+    }
+    public function getUrl(){
+        $script_file = $_SERVER['SCRIPT_FILENAME'];
+        $script_file = substr($script_file,0,-9);
+        return  $script_file;
+    }
+
+    public function getSucai(){
+        $ACCESS_TOKEN = $this->__getAccessToken();
+        $MEDIA_ID = 'aLjKn8LWT4uAp2mzRPEwxr-E4pQV_zMY2cwq4mjrKTAuAdDkwqQtI8vkoptf3k-O';
+        $url = "https://api.weixin.qq.com/cgi-bin/media/get?access_token={$ACCESS_TOKEN}&media_id={$MEDIA_ID}";
+        header('location:'.$url);
     }
 }
