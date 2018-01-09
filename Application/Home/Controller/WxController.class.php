@@ -21,6 +21,8 @@ class WxController extends Controller{
         'music'=>'<xml><ToUserName>< ![CDATA[%s] ]></ToUserName><FromUserName>< ![CDATA[%s] ]></FromUserName><CreateTime>%s</CreateTime><MsgType>< ![CDATA[music] ]></MsgType><Music><Title>< ![CDATA[%s] ]></Title><Description>< ![CDATA[%s] ]></Description><MusicUrl>< ![CDATA[%s] ]></MusicUrl><HQMusicUrl>< ![CDATA[%s] ]></HQMusicUrl><ThumbMediaId>< ![CDATA[%s] ]></ThumbMediaId></Music></xml>',
     );
 
+    public $media;
+
     public function checkSignature(){
         $signature = $_GET['signature'];
         $timestamp = $_GET['timestamp'];
@@ -65,7 +67,7 @@ class WxController extends Controller{
 
     public function reponseImage($obj){
         $image = $this->getImage();
-        $image['MediaId'] = 'aLjKn8LWT4uAp2mzRPEwxr-E4pQV_zMY2cwq4mjrKTAuAdDkwqQtI8vkoptf3k-O';
+        $image['MediaId'] = $this->media;
         $msg = sprintf($this->_msgTpl['image'],$obj->FromUserName,$obj->ToUserName,time(),$image['MediaId']);
         echo $msg;
     }
@@ -93,15 +95,15 @@ class WxController extends Controller{
     }
 
     private function __getAccessToken(){
-        if(cookie('access_token') != ''){
-            return cookie('access_token');
+        if(cookie('access_token1') != ''){
+            return cookie('access_token1');
         }
         $appID = C('appID');
         $appsecret = C('appsecret');
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appID}&secret={$appsecret}";
         $result = $this->__http_client($url);
         if(isset($result['access_token'])){
-            cookie('access_token',$result['access_token'],$result['expires_in']);
+            cookie('access_token1',$result['access_token'],$result['expires_in']);
             return $result['access_token'];
         }else{
             throw new Exception('access token获取失败');
@@ -189,11 +191,11 @@ class WxController extends Controller{
         $filesize = filesize($path);
         $data['media'] = "@{$this->getUrl()}{$path};type=image;filename={$name}.{$ext};filelength={$filesize};content-type=image/$ext;";
         $result = $this->__http_client($url,'post',$data);
-        if(isset($result['media_id'])){
-            $data = array(
-
-            );
-            $sql = M('wxsucai')->add();
+        $this->media = $result['media_id'];
+        if($this->media != ''){
+            echo '文件上传成功';
+        }else{
+            echo '文件上传失败';
         }
     }
     public function getUrl(){
