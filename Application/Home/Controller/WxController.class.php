@@ -208,4 +208,25 @@ class WxController extends Controller{
         $url = "https://api.weixin.qq.com/cgi-bin/media/get?access_token={$ACCESS_TOKEN}&media_id={$MEDIA_ID}";
         header('location:'.$url);
     }
+
+    public function getQrcode(){
+        $TOKEN = $this->__getAccessToken();
+        $url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token={$TOKEN}";
+        $array = array(
+            'expire_seconds'=>604800,
+            'action_name'=>'QR_SCENE',
+            'action_info'=>array(
+                'scene'=>array(
+                    'scene_id'=>'123',
+                )
+            )
+        );
+        $data = json_encode($array);
+        $result = $this->__http_client($url,'post',$data);
+        if(isset($result['ticket'])){
+            $TICKET = urlencode($result['ticket']);
+            $url = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={$TICKET}";
+            header('location:'.$url);
+        }
+    }
 }
