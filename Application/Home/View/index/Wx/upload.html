@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>上传素材</title>
+        <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <form role="form" action="{:U('Wx/uploadFunction')}" method="post" id="form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">名称</label>
+                    <input type="text" name="title" class="form-control" id="name" placeholder="请输入名称">
+                </div>
+                <div class="form-group">
+                    <label for="inputfile">文件输入</label>
+                    <input type="file" name="photo" id="inputfile">
+                    <p class="help-block">这里是块级帮助文本的实例。</p>
+                </div>
+                <div class="checkbox">
+                    <label class="radio-inline">
+                        <input type="radio" name="type" id="optionsRadios3" value="temp" checked> 临时素材
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="type" id="optionsRadios4"  value="all"> 永久素材
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-default">提交</button>
+            </form>
+        </div>
+    </body>
+</html>
+<script>
+
+</script>
